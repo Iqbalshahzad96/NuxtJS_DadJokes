@@ -1,10 +1,10 @@
 <template>
   <div>
     <nuxt-link to="/jokes">Back To Jokes</nuxt-link>&nbsp;&nbsp;
-    <nuxt-link to="/jokes/random">Next Random Joke</nuxt-link>
+    <router-link :to='`/jokes/random`' @click.native="$router.go()" class="sub-link">Next Random Joke</router-link>
     <h2>{{ joke }}</h2>
     <hr>
-    <small>Joke ID: {{ $route.params.id }}</small>
+    <small>Joke ID: {{ id }}</small>
   </div>
 </template>
 
@@ -13,7 +13,8 @@ import axios from "axios";
 export default {
   data() {
     return {
-      joke: {}
+      joke: {},
+      id: {}
     };
   },
   async created() {
@@ -23,11 +24,11 @@ export default {
       }
     };
     try {
-      const res = await axios.get(
-       `https://icanhazdadjoke.com/j/${this.$route.params.id}`,
+      const res = await axios.get( 'https://icanhazdadjoke.com/',
         config
       );
       this.joke = res.data.joke;
+      this.id = res.data.id
     } catch (err) {
       console.log(err);
     }
